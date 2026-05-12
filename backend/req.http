@@ -1,0 +1,116 @@
+### User Register
+
+POST http://localhost:4000/user-api/users
+Content-Type: application/json
+
+{
+    "firstName": "Shiva",
+    "lastName": "Mani",
+    "email": "sm@email.com",
+    "password": "123456",
+    "profileImageUrl": "https://example.com/avatars/user.png"
+}
+### Author Register
+POST http://localhost:4000/author-api/users
+Content-Type: application/json
+
+{
+    "firstName": "Shiva",
+    "lastName": "Mani",
+    "email": "sm271@email.com",
+    "password": "123456",
+    "profileImageUrl": "https://example.com/avatars/user.png"
+}
+
+### Create an Article
+POST http://localhost:4000/author-api/articles
+Content-Type: application/json
+
+{
+    "title":"Programming in Python",
+    "category":"Data Science",
+    "content":"Python is one of the primary languages to perform Data Science Applications"
+}
+### Read Articles by a Author
+GET http://localhost:4000/author-api/articles
+### Update the Article by Author
+PUT http://localhost:4000/author-api/articles
+Content-Type: application/json
+
+{
+    "articleId": "69ae8bc637d4c2dc7228f7c6",
+    "title":"Programming in Python 2",
+    "category":"Data Science",
+    "content":"Python is one of the primary languages to perform Data Science Applications"
+}
+### Delete an Article
+DELETE http://localhost:4000/author-api/article/69ae8bc637d4c2dc7228f7c6
+
+### Reading Articles by User
+GET http://localhost:4000/user-api/articles
+### Post Comments by User
+POST http://localhost:4000/user-api/articles
+Content-Type: application/json
+
+{
+    "articleId":"6989ac3602f916a38ae61e0e",
+    "comment":"It is Good"
+}
+### Login any user 
+POST http://localhost:4000/common-api/login
+Content-Type: application/json
+
+{
+    "email":"sm@email.com",
+    "password":"123456"
+}
+### Logout any User
+GET http://localhost:4000/common-api/logout
+### Handling Invalid Paths
+GET http://localhost:4000/hello
+
+### Login Admin
+POST http://localhost:4000/common-api/login
+Content-Type: application/json
+
+{
+    "email":"admin@mail.com",
+    "password":"admin"
+}
+
+### Blocking an User
+PUT http://localhost:4000/admin-api/block
+Content-Type: application/json
+
+{
+    "email":"sm@email.com"
+}
+
+### Unblocking an User
+PUT http://localhost:4000/admin-api/unblock
+Content-Type: application/json
+
+{
+    "email":"sm@email.com"
+}
+
+### Reading all Articles by Admin
+GET http://localhost:4000/admin-api/articles
+
+### Change Password
+PUT http://localhost:4000/common-api/change-password
+Content-Type: application/json
+
+{
+    "email":"sm2712@email.com",
+    "currentPassword":"12345678",
+    "newPassword":"123456789"
+}
+### Login after changing the password
+POST http://localhost:4000/common-api/login
+Content-Type: application/json
+
+{
+    "email":"sm2712@email.com",
+    "password":"123456789"
+}
