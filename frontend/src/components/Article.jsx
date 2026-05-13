@@ -1,6 +1,6 @@
 import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosConfig";
 import { useAuth } from "../store/authStore";
 import { toast } from "react-hot-toast";
 import {
@@ -40,7 +40,7 @@ function Article() {
     if (!window.confirm(confirmMsg)) return;
 
     try {
-      let res = await axios.delete(`http://localhost:4000/author-api/article/${article._id}`, { withCredentials: true });
+      let res = await axiosInstance.delete(`/author-api/article/${article._id}`);
       if (res.status === 201) {
         setIsActive(res.data.payload);
         toast.success(res.data.message);
@@ -65,7 +65,7 @@ function Article() {
   const addComment = async (commentObj) => {
     commentObj.articleId = article._id;
     try {
-      let res = await axios.post("http://localhost:4000/user-api/articles", commentObj, { withCredentials: true });
+      let res = await axiosInstance.post("/user-api/articles", commentObj);
       if (res.status === 201) {
         toast.success(res.data.message);
       }

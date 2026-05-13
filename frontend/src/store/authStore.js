@@ -1,5 +1,5 @@
 import {create} from 'zustand'
-import axios from 'axios'
+import axiosInstance from '../api/axiosConfig'
 
 export const useAuth = create((set)=>({
     currentUser:null,
@@ -13,7 +13,7 @@ export const useAuth = create((set)=>({
             // Set Loading State
             set({loading:true,err:null})
             // Make API Req
-            let res = await axios.post("http://localhost:4000/common-api/login",userObj,{withCredentials:true})
+            let res = await axiosInstance.post("/common-api/login",userObj)
                     
             set({loading:false,error:null,isAuthenticated:true,currentUser:res.data.payload})
             
@@ -38,7 +38,7 @@ export const useAuth = create((set)=>({
     checkAuth: async () => {
         try{
             set({loading:true,error:null})
-            let res = await axios.get("http://localhost:4000/common-api/check-auth",{withCredentials: true})
+            let res = await axiosInstance.get("/common-api/check-auth")
             set({loading:false,error:null,isAuthenticated:true,currentUser:res.data.payload})
         }
         catch(err)
@@ -64,7 +64,7 @@ export const useAuth = create((set)=>({
             // Set Loading State
             set({loading:true,err:null})
             // Make API Req
-            let res = await axios.get("http://localhost:4000/common-api/logout",{withCredentials:true})
+            let res = await axiosInstance.get("/common-api/logout")
                 
             // Update State
             set({loading:false,error:null,isAuthenticated:false,currentUser:null})

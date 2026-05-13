@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import axios from 'axios'
+import axiosInstance from '../api/axiosConfig'
 import toast from 'react-hot-toast'
 import { formCard, formGroup, inputClass, labelClass, pageBackground, primaryBtn, submitBtn } from '../styles/common'
 
@@ -10,7 +10,7 @@ function AddArticle() {
     const navigate = useNavigate()
     const submit = async (obj) =>{
         try {
-            let res = await axios.post("http://localhost:4000/author-api/articles", obj, { withCredentials: true })
+            let res = await axiosInstance.post("/author-api/articles", obj)
             if (res.status === 201) {
                 toast.success("Article created successfully")
                 navigate('/authordashboard/articles')

@@ -2,8 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import {useNavigate} from 'react-router'
+import { useNavigate } from 'react-router'
 import toast from 'react-hot-toast'
+import axiosInstance from '../api/axiosConfig'
 
 function Register() {
   const {register,handleSubmit,formState:{errors}} = useForm()
@@ -20,10 +21,10 @@ function Register() {
     let apiUrl = ""
     if(newUser.role === "USER")
     {
-      apiUrl = "http://localhost:4000/user-api/users"
+      apiUrl = "/user-api/users"
     }
     else if (newUser.role === "AUTHOR"){
-      apiUrl = "http://localhost:4000/author-api/users"
+      apiUrl = "/author-api/users"
     }
     console.log(newUser)
 
@@ -38,24 +39,18 @@ function Register() {
         });
         // add profilePic to Formdata object
         formData.append("profileImageUrl", profileImageUrl[0]);
-      let res = await fetch(apiUrl,{
-        method:"POST",
-        body: formData
-      })
+      let res = await axiosInstance.post(apiUrl, formData)
+      
     if(res.status===201)
     {
       toast.success('Registered Successfully')
       navigate('/login')
     }
-    else
-    {
-      let errRes = await res.json()
-      throw new Error(errRes.reason || errRes.message || "Failed to Fetch")
-    }
   }
     catch(err)
     {
-      setError(err)
+      const backendErrorMessage = err.response?.data?.reason || err.response?.data?.message || err.message;
+      setError(new Error(backendErrorMessage))
     }
     finally
     {

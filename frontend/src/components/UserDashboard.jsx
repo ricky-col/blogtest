@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../store/authStore'
-import axios from 'axios'
+import axiosInstance from '../api/axiosConfig'
 import { motion } from 'framer-motion'
 import { 
   pageWrapper, 
@@ -46,7 +46,7 @@ function UserDashboard() {
     const getArticles = async () => {
       try {
         setLoading(true)
-        let res = await axios.get("http://localhost:4000/user-api/articles", { withCredentials: true })
+        let res = await axiosInstance.get("/user-api/articles")
         setArticles(res.data.payload)
       } catch (err) {
         setError(err.response?.data?.error || "Failed to fetch articles")
