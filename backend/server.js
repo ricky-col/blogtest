@@ -22,22 +22,30 @@ app.use('/author-api', authorRoute)
 app.use('/admin-api', adminRoute)
 app.use('/common-api', commonRoute)
 
-// Connecting to DB
-const connectDB = async () => {
+// Connecting to DB and then starting the server
+const startServer = async () => {
     try {
-        await connect(process.env.DB_URL)
-        console.log("DB Connection Successful (Connected to Local MongoDB)")
+        await connect(process.env.DB_URL, {
+            serverSelectionTimeoutMS: 5000,
+            dbName: 'blog' // Explicitly set the DB name
+        })
+        console.log("✅ DB Connection Successful (Connected to MongoDB Atlas)")
+        
+        // Start HTTP Server ONLY after DB connection is successful
+        app.listen(process.env.PORT, () =>
+            console.log(`🚀 Server Started on port ${process.env.PORT} and DB is ready!`)
+        )
     }
     catch (err) {
-        console.log("Error in DB Connection:", err)
+        console.error("❌ CRITICAL: DB Connection Error:", {
+            message: err.message,
+            code: err.code
+        })
+        process.exit(1) // Stop the process if we can't connect to DB
     }
 }
-connectDB()
 
-// Start HTTP Server regardless of DB status so the API doesn't crash completely
-app.listen(process.env.PORT, () =>
-    console.log("Server Started on port " + process.env.PORT)
-)
+startServer()
 
 //Dealing with Invalid path
 app.use((req, res, next) => {

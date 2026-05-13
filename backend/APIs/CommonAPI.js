@@ -14,8 +14,8 @@ commonRoute.post('/login',async (req,res) => {
 
     res.cookie("token",token,{
         httpOnly:true,
-        sameSite:"lax",
-        secure:false
+        sameSite:"none", // Required for cross-site cookies
+        secure:true      // Required when sameSite is 'none'
     })
     //Send Response
     res.status(200).json({message:"Login Success",payload: user})
@@ -46,9 +46,9 @@ commonRoute.put('/change-password', async (req,res) => {
 commonRoute.get('/logout', (req,res)=>{
     // Clear the cookie names 'token'
     res.clearCookie('token',{
-        httpOnly:true, //Must match the Original Settings
-        sameSite: false, //Must match the Original Settings
-        sameSite: 'lax' //Must match the Original Settings
+        httpOnly:true,
+        sameSite: 'none',
+        secure: true
     })
 
     res.status(200).json({message:"Logged Out Successfully"})
