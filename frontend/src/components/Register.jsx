@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {useNavigate} from 'react-router'
+import toast from 'react-hot-toast'
 
 function Register() {
   const {register,handleSubmit,formState:{errors}} = useForm()
@@ -12,6 +13,7 @@ function Register() {
   let navigate = useNavigate()
   const onRegister = async(newUser)=>{
     setLoading(true)
+    setError(null)
 
     newUser.role = newUser.role.toUpperCase();
 
@@ -42,12 +44,13 @@ function Register() {
       })
     if(res.status===201)
     {
+      toast.success('Registered Successfully')
       navigate('/login')
     }
     else
     {
-      console.log(res)
-      throw new Error("Failed to Fetch")
+      let errRes = await res.json()
+      throw new Error(errRes.reason || errRes.message || "Failed to Fetch")
     }
   }
     catch(err)
@@ -89,11 +92,9 @@ function Register() {
         <div className="text-center my-6">
         <label 
             htmlFor="profile-upload" 
-            className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
-        >
+            className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">
             Upload Profile Pic
         </label>
-
         <input 
             type="file" 
             id="profile-upload" 

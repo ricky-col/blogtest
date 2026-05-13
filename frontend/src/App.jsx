@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AddArticle from './components/AddArticle'
 import Unauthorized from './components/Unauthorized'
 import AuthorArticles from './components/AuthorArticles'
+import EditArticle from './components/EditArticleForm'
 
 function App() {
   const routerObj = createBrowserRouter([
@@ -64,6 +65,10 @@ function App() {
     {
       path: 'unauthorized',
       element: <Unauthorized/>
+    },
+    {
+      path: '/edit-article',
+      element: <ProtectedRoute allowedRoles={["AUTHOR"]}><EditArticle /></ProtectedRoute>
     }
   ]}
   ])

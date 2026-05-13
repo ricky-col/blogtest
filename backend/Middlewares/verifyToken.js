@@ -10,7 +10,7 @@ export const verifyToken = (...allowedRoles) => {
             console.log("Token: ",token)
             
             if(!token){
-                return res.status(400).json({message:"Unauthorized Request. Please Login"})
+                return res.status(401).json({message:"Unauthorized Request. Please Login"})
             }
             // Verify the validity of the token(Decoding the Token)
             let decodedToken = jwt.verify(token,process.env.JWT_SECRET)

@@ -23,22 +23,21 @@ app.use('/admin-api',adminRoute)
 app.use('/common-api',commonRoute)
 
 // Connecting to DB
-const connectDB = async()=>{
-
-    try
-    {
+const connectDB = async () => {
+    try {
         await connect(process.env.DB_URL)
-        console.log("DB Connection Succesful")
-        // Start HTTP Server
-        app.listen(process.env.PORT,()=>console.log("Server Started"))
+        console.log("DB Connection Successful (Connected to Local MongoDB)")
     }
-    catch(err)
-    {
-        console.log("Error in DB Connection",err)
+    catch (err) {
+        console.log("Error in DB Connection:", err)
     }
-
 }
 connectDB()
+
+// Start HTTP Server regardless of DB status so the API doesn't crash completely
+app.listen(process.env.PORT, () =>
+    console.log("Server Started on port " + process.env.PORT)
+)
 
 //Dealing with Invalid path
 app.use((req,res,next)=>{

@@ -78,12 +78,12 @@ authorRoute.put("/articles",verifyToken("AUTHOR"), async (req,res) => {
     // Find the Article
     let checkArticle = await ArticleModel.findById(articleId)
     if(!checkArticle){
-        res.status(401).json({message:"Article is Not Found"})    
+        return res.status(401).json({message:"Article is Not Found"})    
     }
     let author = checkArticle.author.toString()
     if(author !== req.user.userId)
     {
-        res.status(403).json({message: "Forbidden"})
+        return res.status(403).json({message: "Forbidden"})
 
     }
     // update the article
@@ -102,17 +102,22 @@ authorRoute.delete('/article/:articleId',verifyToken("AUTHOR") , async (req,res)
     // Find the required article
     let findArticle = await ArticleModel.findById(artId)
     if(!findArticle){
-        res.status(401).json({message:"Article is Not Found"})
+        return res.status(401).json({message:"Article is Not Found"})
     }
     let author = findArticle.author.toString()
     if(author !== req.user.userId)
     {
-        res.status(403).json({message: "Forbidden"})
+        return res.status(403).json({message: "Forbidden"})
 
     }
-    // Soft Delete the Article by updating the isArticleActive attribute
-    await ArticleModel.findByIdAndUpdate(artId,{$set:{isArticleActive: false}},{new:true})
+    // Soft Delete/Restore the Article by toggling the isArticleActive attribute
+    const newStatus = !findArticle.isArticleActive
+    await ArticleModel.findByIdAndUpdate(artId,{$set:{isArticleActive: newStatus}},{new:true})
+    
     // Send the Response
-    res.status(201).json({message:"Article Deleted"})
+    res.status(201).json({
+        message: newStatus ? "Article Restored" : "Article Deleted",
+        payload: newStatus
+    })
 
 })

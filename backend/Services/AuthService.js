@@ -7,13 +7,19 @@ config()
 //Register Function
 export const register = async (userObj) => {
     // Check if already exists
-    let user = await UserTypeModel()
+    let existingUser = await UserTypeModel.findOne({ email: userObj.email })
+    if (existingUser) {
+        const err = new Error("Email already exists")
+        err.status = 409
+        throw err
+    }
+
     // Create Document
     const userDoc = new UserTypeModel(userObj)
     //Validation for Empty Passwords
     await userDoc.validate()
     //Hash and Replace plain password
-    userDoc.password = await bcrypt.hash(userDoc.password,10)
+    userDoc.password = await bcrypt.hash(userDoc.password, 10)
     //Save
     const created = await userDoc.save()
     //Convert document to object to remove password

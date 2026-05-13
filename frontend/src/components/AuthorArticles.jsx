@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useAuth } from "../store/authStore";
+import { motion } from "framer-motion";
 
 import {
   articleCardClass,
@@ -15,6 +16,25 @@ import {
   articleStatusActive,
   articleStatusDeleted,
 } from "../styles/common";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+  }
+}
 
 function AuthorArticles() {
   const navigate = useNavigate();
@@ -67,9 +87,20 @@ function AuthorArticles() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
       {articles.map((article) => (
-        <div key={article._id} className={`${articleCardClass} relative flex flex-col`}>
+        <motion.div 
+          key={article._id} 
+          variants={itemVariants}
+          whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.05)" }}
+          whileTap={{ scale: 0.98 }}
+          className={`${articleCardClass} relative flex flex-col`}
+        >
           {/* Status Badge */}
           <span className={article.isArticleActive ? articleStatusActive : articleStatusDeleted}>
             {article.isArticleActive ? "ACTIVE" : "DELETED"}
@@ -86,10 +117,10 @@ function AuthorArticles() {
           <button className={`${ghostBtn} mt-auto pt-4`} onClick={() => openArticle(article)}>
             Read Article →
           </button>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
-export default AuthorArticles;
+export default AuthorArticles;

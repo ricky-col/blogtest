@@ -33,14 +33,21 @@ function Article() {
   console.log(article)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const toggleArticleStatus = async () => {
-    const newStatus = !article.isArticleActive;
+  const [isActive, setIsActive] = useState(article.isArticleActive);
 
-    const confirmMsg = newStatus ? "Restore this article?" : "Delete this article?";
+  const toggleArticleStatus = async () => {
+    const confirmMsg = isActive ? "Delete this article?" : "Restore this article?";
     if (!window.confirm(confirmMsg)) return;
-    
-    // Add logic here to hit the API, currently it just alerts but let's at least not break the UI
-    console.log("Toggle status to", newStatus);
+
+    try {
+      let res = await axios.delete(`http://localhost:4000/author-api/article/${article._id}`, { withCredentials: true });
+      if (res.status === 201) {
+        setIsActive(res.data.payload);
+        toast.success(res.data.message);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Action failed");
+    }
   };
 
   const formatDate = (date) => {
@@ -93,7 +100,7 @@ function Article() {
           </button>
 
           <button className={deleteBtn} onClick={toggleArticleStatus}>
-            {article.isArticleActive ? "Delete" : "Restore"}
+            {isActive ? "Delete" : "Restore"}
           </button>
         </div>
       )}

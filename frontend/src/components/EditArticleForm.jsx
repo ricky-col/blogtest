@@ -86,7 +86,7 @@ function EditArticle() {
               },
             })}
           />
-          {errors.content?.type === 'required' && <p className='text-red-400'>Content is required</p>}
+          {errors.content && <p className='text-red-400'>{errors.content.message}</p>}
           </div>
         <button className={submitBtn}>Update Article</button>
       </form>
