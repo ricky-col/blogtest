@@ -1,16 +1,50 @@
-# React + Vite
+# 🎨 Blog App Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive frontend for the MERN Blog Application, built with React and Vite.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
+- **Library**: React 18
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **State Management**: Zustand
+- **Forms**: React Hook Form
+- **API Client**: Axios
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📁 Project Structure
 
-## React Compiler
+```text
+frontend/
+├── src/
+│   ├── api/            # Centralized API configuration (Axios)
+│   ├── components/     # React components & Pages
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── UserDashboard.jsx
+│   │   ├── AuthorArticles.jsx
+│   │   └── Article.jsx
+│   ├── store/          # Zustand store for Auth & Global state
+│   ├── styles/         # Shared Tailwind CSS utility classes
+│   ├── App.jsx         # Main routing & Layout
+│   └── main.jsx        # App entry point
+├── .env                # Environment variables
+└── vite.config.js      # Vite configuration
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🔐 Environment Variables
+Create a `.env` file in the root of the `frontend` folder:
+```env
+VITE_API_URL=https://your-backend-url.onrender.com
+```
 
-## Expanding the ESLint configuration
+## 🛠️ Installation & Running
+1. `cd frontend`
+2. `npm install`
+3. `npm run dev`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Key Features
+- **Role-Based Access**: Distinct dashboards for Users and Authors.
+- **Rich Interactions**: Smooth page transitions and staggering grid animations using Framer Motion.
+- **Responsive Design**: Mobile-friendly layout using Tailwind CSS.
+- **Efficient State**: Lightweight state management with Zustand for user authentication.
